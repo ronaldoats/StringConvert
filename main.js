@@ -218,8 +218,8 @@ define(function (require, exports, module) {
         m.addMenuItem(CONVERT_SPACES_TO_TABS);
     };
 
-    CommandManager.register("To Upper Case", CONVERT_UPPERCASE, _convertSelectionToUpperCase);
-    CommandManager.register("To Lower Case", CONVERT_LOWERCASE, _convertSelectionToLowerCase);
+    CommandManager.register("To Upper Case + [Ctrl + Alt + U]", CONVERT_UPPERCASE, _convertSelectionToUpperCase);
+    CommandManager.register("To Lower Case + [Ctrl + Alt + Shift + L]", CONVERT_LOWERCASE, _convertSelectionToLowerCase);
     CommandManager.register("HTML Entity Encode", CONVERT_HTML_ENCODE, _encodeHTMLEntities);
     CommandManager.register("HTML Entity Decode", CONVERT_HTML_DECODE, _decodeHTMLEntities);
     CommandManager.register("Double to Single Quotes", CONVERT_DOUBLE_SINGLE, _convertToSingleQuotes);
@@ -237,4 +237,13 @@ define(function (require, exports, module) {
 
     var contextMenu = Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU);
     buildMenu(contextMenu);
+
+        var _KeyPress = function (e) {
+        var evtobj = window.event ? event : e
+        if (evtobj.ctrlKey && evtobj.altKey && evtobj.keyCode == 85) _convertSelectionToUpperCase();
+        if (evtobj.ctrlKey && evtobj.shiftKey && evtobj.keyCode == 76) _convertSelectionToLowerCase();
+
+    }
+
+    document.onkeydown = _KeyPress;
 });
